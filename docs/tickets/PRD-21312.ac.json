@@ -1,0 +1,281 @@
+[
+  {
+    "id": "TC-MIRO-001",
+    "ac": "AC1",
+    "text": "Given a valid X-Miro-Access-Token header, When the caller sends tools/list, Then the response lists the 10 Miro tools with no error",
+    "type": "auto",
+    "tests": [
+      "tests/test_tools.py::test_tools_list_snapshot"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_tools.py::test_tools_list_snapshot PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-002",
+    "ac": "AC2",
+    "text": "Given a request with no X-Miro-Access-Token header (or an empty one), When any tool is called, Then the server returns a structured 401 naming the missing header and makes no call to Miro",
+    "type": "auto",
+    "tests": [
+      "tests/test_middleware.py::test_missing_credential_header_returns_401"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_middleware.py::test_missing_credential_header_returns_401 PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-003",
+    "ac": "AC3",
+    "text": "Given a valid token, When miro_list_boards is called, Then the response is a bounded list (<=50 default, <=200 hard cap) with a pagination cursor if more exist",
+    "type": "auto",
+    "tests": [
+      "tests/test_boards.py::test_list_boards_returns_bounded_results_with_cursor"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_boards.py::test_list_boards_returns_bounded_results_with_cursor PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-004",
+    "ac": "AC3",
+    "text": "Given a valid token and a free-text query, When miro_list_boards is called with that query, Then the query is forwarded to Miro's search parameter",
+    "type": "auto",
+    "tests": [
+      "tests/test_boards.py::test_list_boards_search_query_is_forwarded"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_boards.py::test_list_boards_search_query_is_forwarded PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-005",
+    "ac": "AC3",
+    "text": "Given a token whose account has zero boards, When miro_list_boards is called, Then the response is an empty list, not an error",
+    "type": "auto",
+    "tests": [
+      "tests/test_boards.py::test_list_boards_empty_result_returns_empty_array_not_error"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_boards.py::test_list_boards_empty_result_returns_empty_array_not_error PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-006",
+    "ac": "AC4",
+    "text": "Given a valid token and an existing board_id, When miro_get_board is called, Then the board's details are returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_boards.py::test_get_board_returns_details"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_boards.py::test_get_board_returns_details PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-007",
+    "ac": "AC4",
+    "text": "Given a valid token and an unknown or inaccessible board_id, When miro_get_board is called, Then a structured not_found error is returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_boards.py::test_get_board_unknown_id_returns_not_found_error"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_boards.py::test_get_board_unknown_id_returns_not_found_error PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-008",
+    "ac": "AC5",
+    "text": "Given a valid token and a board name, When miro_create_board is called, Then a new board is created in Miro and its id/name/url are returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_boards.py::test_create_board_posts_name_and_returns_new_board"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_boards.py::test_create_board_posts_name_and_returns_new_board PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-009",
+    "ac": "AC6",
+    "text": "Given a valid token and board_id, When miro_list_board_items is called, Then a bounded, paginated list of items on that board is returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_list_board_items_bounded_and_paginated"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_list_board_items_bounded_and_paginated PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-010",
+    "ac": "AC6",
+    "text": "Given a valid token, board_id, and an item-type filter, When miro_list_board_items is called, Then only items of that type are returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_list_board_items_filters_by_type"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_list_board_items_filters_by_type PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-011",
+    "ac": "AC7",
+    "text": "Given a valid token, board_id, and item_id, When miro_get_item is called, Then that item's details are returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_get_item_returns_details"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_get_item_returns_details PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-012",
+    "ac": "AC7",
+    "text": "Given a valid token, board_id, and an unknown item_id, When miro_get_item is called, Then a structured not_found error is returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_get_item_unknown_id_returns_not_found_error"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_get_item_unknown_id_returns_not_found_error PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-013",
+    "ac": "AC8",
+    "text": "Given a valid token, board_id, and text content, When miro_create_sticky_note is called, Then a sticky-note item is created on that board and its id is returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_create_sticky_note_posts_content_and_returns_id"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_create_sticky_note_posts_content_and_returns_id PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-014",
+    "ac": "AC8",
+    "text": "Given a real Miro sandbox account and board, When initialize -> tools/call miro_create_sticky_note is run end to end, Then the live response matches this design's assumed field names/response shape",
+    "type": "manual",
+    "steps": [
+      "Obtain a real Miro access token for a disposable sandbox board (service-account token per developers.miro.com)",
+      "Start the miro-mcp server locally with that token in X-Miro-Access-Token",
+      "Send initialize, then tools/call miro_create_sticky_note with a test board_id and content",
+      "Inspect the raw Miro API response and compare field names/shape against this document's Data & API contract section"
+    ],
+    "expect": "A sticky note is visibly created on the real board; the response field names (id, data.content, position) match what this document assumes; any mismatch is corrected in the implementation before review",
+    "result": "untested",
+    "notes": "needs a real vendor account; per SOP, absence of a test account at design time is not a blocker -- this case ships untested and the rest of the suite does not depend on it"
+  },
+  {
+    "id": "TC-MIRO-015",
+    "ac": "AC9",
+    "text": "Given a valid token, board_id, and title, When miro_create_card is called, Then a card item is created on that board and its id is returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_create_card_posts_title_and_returns_id"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_create_card_posts_title_and_returns_id PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-016",
+    "ac": "AC10",
+    "text": "Given a valid token, board_id, item_id, and new content, When miro_update_item is called, Then the item is updated in Miro",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_update_item_patches_content"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_update_item_patches_content PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-017",
+    "ac": "AC10",
+    "text": "Given a field that is not valid for the target item's actual type, When miro_update_item is called, Then a structured invalid_argument error is returned, not a raw Miro error",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_update_item_invalid_field_for_type_returns_invalid_argument"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_update_item_invalid_field_for_type_returns_invalid_argument PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-018",
+    "ac": "AC11",
+    "text": "Given a valid token, board_id, and one explicit item_id, When miro_delete_item is called, Then exactly that item is removed and no bulk/fuzzy form is accepted",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_delete_item_removes_single_explicit_id"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_delete_item_removes_single_explicit_id PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-019",
+    "ac": "AC11",
+    "text": "Given the miro_delete_item tool definition, When tools/list is inspected, Then its annotation is destructiveHint: true",
+    "type": "auto",
+    "tests": [
+      "tests/test_tools.py::test_delete_item_tool_is_annotated_destructive"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_tools.py::test_delete_item_tool_is_annotated_destructive PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-020",
+    "ac": "AC11",
+    "text": "Given an item_id that does not exist, When miro_delete_item is called, Then a structured not_found error is returned, not a silent success",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_delete_item_unknown_id_returns_not_found_not_silent_success"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_delete_item_unknown_id_returns_not_found_not_silent_success PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-021",
+    "ac": "AC12",
+    "text": "Given a valid token and board_id, When miro_list_board_members is called, Then a bounded, paginated list of the board's collaborators is returned",
+    "type": "auto",
+    "tests": [
+      "tests/test_members.py::test_list_board_members_bounded_and_paginated"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_members.py::test_list_board_members_bounded_and_paginated PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-022",
+    "ac": "AC13",
+    "text": "Given Miro's API returns 429 for a tool call, Then the MCP server returns code rate_limited with retryable: true",
+    "type": "auto",
+    "tests": [
+      "tests/test_errors.py::test_miro_429_maps_to_rate_limited_retryable"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_errors.py::test_miro_429_maps_to_rate_limited_retryable PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-023",
+    "ac": "AC13",
+    "text": "Given Miro's API returns a 5xx for a tool call, Then the MCP server returns code upstream_error with retryable: true",
+    "type": "auto",
+    "tests": [
+      "tests/test_errors.py::test_miro_5xx_maps_to_upstream_error_retryable"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_errors.py::test_miro_5xx_maps_to_upstream_error_retryable PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-024",
+    "ac": "AC14",
+    "text": "Given two concurrent requests carrying two different tokens, When both are in flight at once, Then neither request's token or response data is observable by the other",
+    "type": "auto",
+    "tests": [
+      "tests/test_middleware.py::test_concurrent_requests_do_not_leak_credentials_across_contextvar"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_middleware.py::test_concurrent_requests_do_not_leak_credentials_across_contextvar PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  },
+  {
+    "id": "TC-MIRO-025",
+    "ac": "AC15",
+    "text": "Given a board with hundreds of items, When miro_list_board_items is called, Then the response is capped at the size limit and signals has_more/cursor rather than silently dropping items",
+    "type": "auto",
+    "tests": [
+      "tests/test_items.py::test_large_item_list_is_capped_with_has_more_not_silently_dropped"
+    ],
+    "result": "pass",
+    "evidence": "pytest tests/test_items.py::test_large_item_list_is_capped_with_has_more_not_silently_dropped PASSED on 2026-11-04 (uv run pytest -v, Python 3.12.16, miro-mcp 0.1.0). Full run: 38 passed, 0 failed, 0 skipped -- see 'Self-test' section in PRD-21312.md for the complete terminal output."
+  }
+]
